@@ -12,7 +12,7 @@ const Login = () => {
             username: e.target[0].value.trim(),
             password: e.target[1].value.trim()
         }).then((res)=>{
-           
+           console.log(res.data);
             setAuthSession(res.data);
             
             // Trigger auth state update

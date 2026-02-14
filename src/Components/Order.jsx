@@ -1,12 +1,14 @@
 import React, { use, useContext,useState, useEffect } from 'react'
 import OrderContext from '../Context/OrderContext'
 import ProductItem from './ProductItem'
-import { Link } from 'react-router-dom'
+import {useNavigate, Link } from 'react-router-dom'
+
 import Success from './Success'
 import axios from 'axios'
 import { getToken } from '../utils/Auth'
 
 const Order = () => {
+  const navigate = useNavigate();
   const { orderItems } = useContext(OrderContext);
   const OrderItems = orderItems;
   const [data,setData]=useState({ items: [] });
@@ -29,8 +31,10 @@ const Order = () => {
         headers: { Authorization: `Bearer ${getToken()}` },    // request headers
       }).then((res) => {
         console.log(res.data);
+        navigate('/success');
       }).catch((err) => {
         console.error(err);
+        alert("Insufficient quantity found your product/s.");
       });
   }
 
@@ -40,7 +44,7 @@ const Order = () => {
       <div className='p-3'>
         <div className='flex justify-between font-bold text-3xl mb-3 text-orange-400 gap-3'>
         <div>Your Order</div>
-        <Link to='/success' className='bg-orange-400 text-white rounded-md text-sm font-normal content-center p-1' onClick={handleorder}>Order Now</Link>
+        <div className='bg-orange-400 text-white rounded-md text-sm font-normal content-center p-1' onClick={handleorder}>Order Now</div>
         </div>
         {OrderItems.length > 0 ? (
           <div className='container'>

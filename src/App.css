@@ -17,9 +17,10 @@ form{
   gap: 10px;
 }
 .card{
-  padding: 10px 0px;
-  height: 24vh;
-  width: 18vw;
+  background-color: #fdfcf0;
+  padding: 1px 0px;
+  height: 26vh;
+  width: 15vw;
   border: 1px solid black;
   display: flex;
   justify-content: center;

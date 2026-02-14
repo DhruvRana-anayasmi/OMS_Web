@@ -23,12 +23,12 @@ useEffect(()=>{
 return (
 <>
 
-        <div className='flex font-bold text-3xl mb-3 text-orange-400 gap-3'>Your Order History</div>
-        <div className='flex gap-3 flex-wrap p-4'>
+        <div className='flex font-bold text-3xl mb-3 text-orange-400 gap-3 mt-6 p-2'>Your Order History</div>
+        {orders.length>0?<div className='flex gap-3 flex-wrap p-4'>
             {orders.map((order)=>(
             <OrderItem  key={order.orderId} orderId={order.orderId} order={order.items}></OrderItem>
         ))}
-        </div>
+        </div>:<div className='flex font-normal  mb-3 justify-center'>No Orders Found</div>}
 </>   
 )
 }
