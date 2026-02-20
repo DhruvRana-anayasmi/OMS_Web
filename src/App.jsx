@@ -8,10 +8,9 @@ import Order from './Components/Order.jsx';
 import Success from './Components/Success.jsx'
 import OrderContext from './Context/OrderContext.jsx';
 import Logout from './Components/Logout.jsx';
-import { History } from 'lucide-react';
-import { CircleUser } from 'lucide-react';
+import { History, CircleUser, LogOut, Home as HomeIcon, ShoppingBag } from 'lucide-react';
 import OrderHistory from './Components/OrderHistory.jsx'
-
+import Register from './Components/Register.jsx'
 import {
   BrowserRouter,
   Routes,
@@ -30,7 +29,7 @@ export default function App() {
   useEffect(() => {
     const checkAuth = () => setIsLoggedIn(isAuthenticated());
     checkAuth();
-    
+
     window.addEventListener('storage', checkAuth);
     window.addEventListener('authChange', checkAuth);
 
@@ -38,7 +37,7 @@ export default function App() {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('storage', checkAuth);
       window.removeEventListener('authChange', checkAuth);
@@ -48,129 +47,107 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* Premium Navigation - Clearly Visible */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white shadow-lg border-b border-slate-200' 
-          : 'bg-white border-b border-slate-200'
-      }`}>
-        <div className="max-w-[1400px] mx-auto">
-          {/* Main Navbar Content - Three Column Layout */}
-          <div className="flex items-center justify-between h-20 px-8">
-            
-          
+      {/* Premium Navigation - Clean & Compact */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100 py-1'
+          : 'bg-white/90 backdrop-blur-sm border-b border-transparent py-2'
+        }`}>
+        {/* Full Width Justified Layout */}
+        <div className="max-w-full mx-auto px-8">
+          <div className="flex items-center justify-between h-14">
 
-            {/* CENTER: Main Navigation */}
-            <div className="flex items-center justify-center flex-1">
-              <div className="flex items-center gap-2 bg-slate-50 px-2 py-1.5 rounded-2xl">
-                <Link 
-                  to="/" 
-                  className="px-6 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white hover:text-emerald-700 rounded-xl transition-all duration-200 hover:shadow-sm"
+            {/* LEFT: Brand Identity */}
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center gap-3 group">
+                <div className="w-9 h-9 bg-emerald-700 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-700/20 group-hover:scale-105 transition-transform">
+                  <span className="text-white font-bold text-lg">S</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold text-xl text-slate-800 tracking-tight leading-none mr-2">STORE</span>
+                  {/* <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">Premium Dashboard</span> */}
+                </div>
+              </Link>
+            </div>
+
+            {/* MIDDLE: Navigation */}
+            <div className="flex items-center justify-center">
+              <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/50">
+                <Link
+                  to="/"
+                  className="flex items-center gap-2 px-6 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-emerald-700 rounded-lg transition-all duration-200"
                 >
-                  Home
+                  <HomeIcon size={18} strokeWidth={2} />
+                  <span>Home</span>
                 </Link>
-                <Link 
-                  to="/products" 
-                  className="px-6 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white hover:text-emerald-700 rounded-xl transition-all duration-200 hover:shadow-sm"
-                >
-                  Products
-                </Link>
-                <Link 
-                  to="/about" 
-                  className="px-6 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white hover:text-emerald-700 rounded-xl transition-all duration-200 hover:shadow-sm"
-                >
-                  About
-                </Link>
+
+                {isLoggedIn && (
+                  <Link
+                    to="/history"
+                    className="flex items-center gap-2 px-6 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-emerald-700 rounded-lg transition-all duration-200"
+                  >
+                    <ShoppingBag size={18} strokeWidth={2} />
+                    <span>Orders</span>
+                  </Link>
+                )}
               </div>
             </div>
 
-            {/* RIGHT: Auth & User Menu */}
-            <div className="flex items-center justify-end gap-4 flex-1">
+            {/* RIGHT: Account Actions */}
+            <div className="flex items-center justify-end gap-4">
               {isLoggedIn ? (
-                <>
-                  <Link 
-                    to='/history' 
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-all duration-200 group relative"
+                <div className="flex items-center gap-4">
+                  {/* Minimalist Logout Button */}
+                  <Link
+                    to="/logout"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all"
                   >
-                    <History size={18} strokeWidth={1.8} />
-                    <span>Orders</span>
-                    <span className="absolute -top-2 -right-2 w-5 h-5 bg-emerald-600 text-white text-xs flex items-center justify-center rounded-full border-2 border-white">
-                      3
-                    </span>
+                    <LogOut size={18} strokeWidth={2.2} />
+                    <span className="hidden lg:inline">Exit</span>
                   </Link>
-                  
-                  <div className="w-px h-8 bg-slate-200"></div>
-                  
-                  <div className="relative group">
-                    
-                    
-                    {/* Dropdown Menu */}
-                    <div className="absolute right-0 top-16 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      <div className="px-4 py-3 border-b border-slate-100">
-                        <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Signed in as</p>
-                        <p className="text-sm font-semibold text-slate-900 mt-1">admin@storefront.com</p>
-                      </div>
-                      <div className="py-1">
-                        <Link 
-                          to="/profile" 
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50"
-                        >
-                          <CircleUser size={16} />
-                          Profile Settings
-                        </Link>
-                        <Link 
-                          to="/history" 
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50"
-                        >
-                          <History size={16} />
-                          Order History
-                        </Link>
-                      </div>
-                      <div className="border-t border-slate-100 pt-1 mt-1">
-                        <Link 
-                          to="/logout" 
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
-                        >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                          </svg>
-                          Sign Out
-                        </Link>
-                      </div>
+
+                  <div className="w-px h-6 bg-slate-200 relative group z-[100]"></div>
+
+                  {/* Profile Pill */}
+                  <button className="flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-slate-200 rounded-full hover:border-emerald-300 transition-all shadow-sm">
+                    <div className="w-7 h-7 bg-emerald-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold">
+                      AD
                     </div>
-                  </div>
-                </>
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Admin</span>
+                    <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
               ) : (
-                <div className="flex items-center gap-3">
-                  <Link 
-                    to="/login" 
-                    className="px-6 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
-                  >
+                <div className="flex items-center gap-4">
+                  <Link to="/login" className="text-sm font-bold text-slate-600 hover:text-emerald-700">
                     Sign In
                   </Link>
-                  <Link 
-                    to="/register" 
-                    className="px-6 py-2.5 bg-emerald-700 text-white text-sm font-semibold rounded-xl hover:bg-emerald-800 shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]"
+                  <Link
+                    to="/register"
+                    className="px-6 py-2 bg-emerald-700 text-white text-sm font-bold rounded-xl hover:bg-emerald-800 shadow-md transition-all active:scale-95"
                   >
                     Get Started
                   </Link>
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </nav>
 
-      {/* Main Content with Top Padding */}
-      <div className="pt-20 min-h-screen bg-slate-50">
-        <OrderContext.Provider value={{orderItems, setOrderItems, getOrderItems}}>
+      {/* Main Content with Top Padding (adjusted for smaller navbar) */}
+      <div className="pt-16 min-h-screen bg-slate-50">
+        <OrderContext.Provider value={{ orderItems, setOrderItems, getOrderItems }}>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<AuthWrapper><Home/></AuthWrapper>} />
-            <Route path="/order" element={<AuthWrapper><Order/></AuthWrapper>} />
-            <Route path="/success" element={<AuthWrapper><Success/></AuthWrapper>} />
-            <Route path="/logout" element={<AuthWrapper><Logout/></AuthWrapper>} />
-            <Route path="/history" element={<AuthWrapper><OrderHistory/></AuthWrapper>} />
+            <Route path="/" element={<AuthWrapper><Home /></AuthWrapper>} />
+            <Route path="/order" element={<AuthWrapper><Order /></AuthWrapper>} />
+            <Route path="/success" element={<AuthWrapper><Success /></AuthWrapper>} />
+            <Route path="/logout" element={<AuthWrapper><Logout /></AuthWrapper>} />
+            <Route path="/history" element={<AuthWrapper><OrderHistory /></AuthWrapper>} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </OrderContext.Provider>
       </div>
@@ -180,8 +157,8 @@ export default function App() {
         <div className="absolute inset-0 bg-slate-50"></div>
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(rgba(203, 213, 225, 0.2) 1px, transparent 1px),
-            linear-gradient(to right, rgba(203, 213, 225, 0.2) 1px, transparent 1px)
+            linear-gradient(rgba(203, 213, 225, 0.15) 1px, transparent 1px),
+            linear-gradient(to right, rgba(203, 213, 225, 0.15) 1px, transparent 1px)
           `,
           backgroundSize: '48px 48px'
         }}></div>

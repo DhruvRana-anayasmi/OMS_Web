@@ -46,7 +46,7 @@ const ProductItem = (props) => {
     const method = difference > 0 ? 'increase' : 'decrease';
     axios({
       method: "post",
-      url: `http://localhost:8080/${method}/${props.product.productId}`,
+      url: `${import.meta.env.VITE_BASE_URL}/${method}/${props.product.productId}`,
       data: { quantity: Math.abs(difference) },
       headers: { Authorization: `Bearer ${getToken()}` },
     })

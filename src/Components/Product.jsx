@@ -29,7 +29,7 @@ const Product = (props) => {
     }
     axios({
         method: "post",
-        url: "http://localhost:8080/add",
+        url: `${import.meta.env.VITE_BASE_URL}/add`,
         params: {},
         data: {
           productName: document.getElementById("productName").value,
@@ -59,7 +59,7 @@ const Product = (props) => {
     console.log("Token", getToken());
     axios({
       method: "get",
-      url: "http://localhost:8080/products",
+      url: `${import.meta.env.VITE_BASE_URL}/products`,
       params: {},
       data: {},
       headers: { Authorization: `Bearer ${getToken()}` },
@@ -72,7 +72,7 @@ const Product = (props) => {
     
     axios({
       method: "get",
-      url: "http://localhost:8080/inventory",
+      url: `${import.meta.env.VITE_BASE_URL}/inventory`,
       params: {},
       data: {},
       headers: { Authorization: `Bearer ${getToken()}` },

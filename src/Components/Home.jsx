@@ -12,7 +12,7 @@ const Home = () => {
 
     axios({
         method: "get",
-        url: "http://localhost:8080/me",
+        url: `${import.meta.env.VITE_BASE_URL}/me`,
         params: {},     // query params (GET)
         data: {},       // request body (POST/PUT)
         headers: { Authorization: `Bearer ${getToken()}` },    // request headers
