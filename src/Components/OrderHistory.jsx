@@ -44,7 +44,7 @@ const OrderHistory = () => {
     const totalItems = orders.reduce((sum, order) => sum + order.items.length, 0);
     const totalSpent = orders.reduce((sum, order) => 
         sum + order.items.reduce((orderSum, item) => 
-            orderSum + (item.price * item.quantity), 0
+            orderSum + (item.price), 0
         ), 0
     );
 

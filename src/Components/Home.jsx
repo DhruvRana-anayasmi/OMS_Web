@@ -1,32 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Product from './Product'
-import axios from 'axios';
-import { isAuthenticated } from '../utils/Auth'
-import { getToken } from '../utils/Auth'
-import { useState } from 'react';
+import { useUser } from '../Context/UserContext'
 const Home = () => {
-  const [role, setRole] = useState([]);
-  let isAdmin = false;
-  useEffect(()=>{
-    isAuthenticated();
+  const { user, loading } = useUser();
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN") || false;
 
-    axios({
-        method: "get",
-        url: `${import.meta.env.VITE_BASE_URL}/me`,
-        params: {},     // query params (GET)
-        data: {},       // request body (POST/PUT)
-        headers: { Authorization: `Bearer ${getToken()}` },    // request headers
-      }).then((res) => {
-        setRole(res.data.roles);
-        console.log(res.roles);
-      }).catch((err) => {
-        console.error(err);
-      });
+  if (loading) {
+    return <div>Loading...</div>; // Or a proper loading component
+  }
 
-  },[])
   return (
   <>
-  <Product isAdmin={role.includes("ROLE_ADMIN")} ></Product>
+  <Product isAdmin={isAdmin} ></Product>
   </> 
   )
 }

@@ -7,7 +7,7 @@ const OrderItem = ({ orderId, order }) => {
 
     // Calculate order totals
     const itemCount = order.length;
-    const subtotal = order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = order.reduce((sum, item) => sum + (item.price), 0);
     
     // Mock order date (you can replace with actual date from API)
     const orderDate = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000);
@@ -18,7 +18,7 @@ const OrderItem = ({ orderId, order }) => {
     });
 
     // Mock status (you can replace with actual status from API)
-    const status = Math.random() > 0.7 ? 'delivered' : Math.random() > 0.5 ? 'processing' : 'cancelled';
+    const status = 'processing';
     
     const statusConfig = {
         delivered: { 
@@ -110,8 +110,8 @@ const OrderItem = ({ orderId, order }) => {
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-semibold text-slate-900">₹{item.price}</p>
-                                    <p className="text-xs text-slate-500">₹{(item.price * item.quantity).toFixed(2)} total</p>
+                                    <p className="font-semibold text-slate-900">₹{item.price/item.quantity}</p>
+                                    <p className="text-xs text-slate-500">₹{(item.price).toFixed(2)} total</p>
                                 </div>
                             </div>
                         ))}
@@ -134,13 +134,11 @@ const OrderItem = ({ orderId, order }) => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3 mt-4">
+                    <div className="w-1/2 flex justify-center gap-3 mt-4">
                         <button className="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow active:scale-[0.98]">
                             Track Order
                         </button>
-                        <button className="flex-1 py-2.5 bg-white hover:bg-slate-100 text-slate-700 text-sm font-medium rounded-lg border border-slate-200 transition-all duration-200 active:scale-[0.98]">
-                            View Details
-                        </button>
+                        
                     </div>
                 </div>
             )}

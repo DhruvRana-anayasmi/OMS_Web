@@ -39,7 +39,6 @@ const Product = (props) => {
         },
         headers: { Authorization: `Bearer ${getToken()}` },
       }).then((res) => {
-        console.log(res.data);
         window.location.reload();
       }).catch((err) => {
         console.error(err);
@@ -48,15 +47,12 @@ const Product = (props) => {
   }
 
   const handleOrder = () => {
-    console.log("Cart items:", selectedCart);
     const cartItems = Object.values(selectedCart)
       .filter(item => item.quantity > 0);
-    console.log("Items to order:", cartItems);
     setOrderItems(cartItems);
   }
 
   useEffect(() => {
-    console.log("Token", getToken());
     axios({
       method: "get",
       url: `${import.meta.env.VITE_BASE_URL}/products`,
@@ -65,7 +61,6 @@ const Product = (props) => {
       headers: { Authorization: `Bearer ${getToken()}` },
     }).then((res) => {
       setproducts(res.data);
-      console.log(res.data);
     }).catch((err) => {
       console.error(err);
     });
@@ -78,7 +73,6 @@ const Product = (props) => {
       headers: { Authorization: `Bearer ${getToken()}` },
     }).then((res) => {
       setInventory(res.data);
-      console.log(res.data);
     }).catch((err) => {
       console.error(err);
     });
