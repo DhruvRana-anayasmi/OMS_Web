@@ -98,10 +98,10 @@ const Product = (props) => {
                 {props.isAdmin ? "Management" : "Collection"}
               </span>
               <div className="flex items-baseline gap-3">
-                <h1 className="text-4xl font-light text-slate-900">
+                <h1 className="text-3xl font-light text-slate-900">
                   {props.isAdmin ? "Admin" : "Premium"}
                 </h1>
-                <h2 className="text-5xl font-black uppercase tracking-tight text-slate-900">
+                <h2 className="text-4xl font-black uppercase tracking-tight text-slate-900">
                   {props.isAdmin ? "Panel" : "Products"}
                 </h2>
               </div>
