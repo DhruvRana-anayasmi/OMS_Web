@@ -291,6 +291,9 @@ export default function App() {
           backgroundSize: '48px 48px'
         }}></div>
       </div>
+      <div className='text-center p-1 text-xs text-slate-500'>
+        <p>Copyright © 2026 StockPop by Dhruv Rana. All rights reserved.</p>
+      </div>
     </BrowserRouter>
   );
 }

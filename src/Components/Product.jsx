@@ -5,7 +5,6 @@ import axios from 'axios';
 import { getToken, isAuthenticated } from '../utils/Auth';
 import { useState } from 'react';
 import OrderContext from '../Context/OrderContext';
-
 const Product = (props) => {
   const navigate = useNavigate()
   const [modal, setModal] = useState(false);
@@ -109,7 +108,7 @@ const Product = (props) => {
 
             {/* Cart Summary for Users */}
             {!props.isAdmin && cartItemCount > 0 && (
-              <div className="flex items-center gap-4">
+              <div className="hidden sm:flex items-center gap-4">
                 <div className="text-right">
                   <span className="text-xs text-slate-500 uppercase tracking-wide">
                     Cart Total
@@ -158,8 +157,9 @@ const Product = (props) => {
         </div>
       )}
 
-      {/* Enhanced Modal */}
-      {modal && (
+
+      {modal && <>
+        
         <div className='fixed inset-0 z-50 flex items-center justify-center'>
           {/* Backdrop */}
           <div
@@ -269,7 +269,7 @@ const Product = (props) => {
             </div>
           </div>
         </div>
-      )}
+      </>}
 
       {/* Products Grid */}
       <div className="max-w-[1400px] mx-auto px-8 py-8">
@@ -305,7 +305,7 @@ const Product = (props) => {
               <p className="text-sm text-slate-500">
                 Showing <span className="font-semibold text-slate-900">{products.length}</span> products
               </p>
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              {/* <div className="flex items-center gap-2 text-xs text-slate-400">
                 <span>Sort by:</span>
                 <button className="font-semibold text-slate-900 hover:text-emerald-600 transition-colors">
                   Latest
@@ -318,7 +318,7 @@ const Product = (props) => {
                 <button className="hover:text-emerald-600 transition-colors">
                   Name
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Product Grid */}
@@ -358,6 +358,30 @@ const Product = (props) => {
           </div>
         )}
       </div>
+
+      {/* Mobile Floating Cart Summary */}
+      {!props.isAdmin && cartItemCount > 0 && (
+        <div className="sm:hidden fixed bottom-6 left-4 right-4 bg-slate-900 rounded-2xl p-4 shadow-2xl z-50 flex items-center justify-between text-white animate-in slide-in-from-bottom-5">
+          <div className="flex flex-col">
+            <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+              Cart Total ({cartItemCount} {cartItemCount === 1 ? 'item' : 'items'})
+            </span>
+            <span className="text-xl font-bold">
+              ₹{cartTotal.toLocaleString()}
+            </span>
+          </div>
+          <Link
+            to='order'
+            onClick={handleOrder}
+            className="bg-emerald-500 hover:bg-emerald-600 px-5 py-2.5 rounded-xl font-semibold transition-colors flex items-center gap-2 active:scale-[0.98]"
+          >
+            Order
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
     </div>
   ) : (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
