@@ -80,7 +80,6 @@ const Register = () => {
                 username: formData.username,
                 password: formData.password
             });
-            console.log("Registration successful:", res.data);
             navigate('/login');
         } catch (error) {
             const message = error.response?.data?.message || "Registration Failed. Please try again.";

@@ -21,10 +21,11 @@ import {
   Routes,
   Route,
   Link,
-  useNavigate
+  useNavigate,
+  useLocation
 } from "react-router-dom";
 
-export default function App() {
+function AppContent() {
   const [orderItems, setOrderItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,6 +33,7 @@ export default function App() {
   const getOrderItems = () => orderItems;
 
   const { user } = useUser();
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = () => setIsLoggedIn(isAuthenticated());
@@ -58,7 +60,7 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <BrowserRouter>
+    <>
       {/* Premium Navigation */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
@@ -300,6 +302,14 @@ export default function App() {
       <div className='text-center p-1 text-xs text-slate-500'>
         <p>Copyright © 2026 StockPop by Dhruv Rana. All rights reserved.</p>
       </div>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
