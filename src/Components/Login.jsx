@@ -45,24 +45,13 @@ const Login = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-slate-50 p-4"
+      className="min-h-[90%] mt-3 flex items-center justify-center bg-slate-50 sm:p-4"
       style={{ fontFamily: "'Inter', 'Poppins', sans-serif" }}
     >
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
+      <div className="w-full max-w-5xl bg-white rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border-0 sm:border border-slate-100">
 
         {/* ── MOBILE TOP STRIP (mobile only) ── */}
-        <div
-          className="md:hidden flex items-center gap-3 px-6 py-4"
-          style={{ background: 'linear-gradient(135deg, #4f46e5, #6366f1)' }}
-        >
-          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center border border-white/30">
-            <span className="text-white font-extrabold text-base">S</span>
-          </div>
-          <div>
-            <p className="text-white font-extrabold text-sm leading-none">StockPop</p>
-            <p className="text-indigo-200 text-[0.55rem] font-semibold tracking-widest uppercase">Order Management</p>
-          </div>
-        </div>
+
 
         {/* ── LEFT PANEL: Branding (desktop only) ── */}
         <div
@@ -119,7 +108,7 @@ const Login = () => {
         </div>
 
         {/* ── RIGHT PANEL: Form ── */}
-        <div className="md:w-8/12 p-6 md:p-12 flex flex-col justify-center">
+        <div className="w-full md:w-8/12 p-4 sm:p-6 md:p-12 flex flex-col justify-center min-w-0">
 
           {/* Header */}
           <div className="mb-8">
@@ -130,7 +119,7 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-5 w-full">
 
             {/* Username */}
-            <div>
+            <div className="w-full">
               <label htmlFor="username" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                 Username
               </label>
@@ -151,7 +140,7 @@ const Login = () => {
             </div>
 
             {/* Password */}
-            <div>
+            <div className="w-full">
               <div className="flex items-center justify-between mb-1.5">
                 <label htmlFor="password" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Password
@@ -169,14 +158,14 @@ const Login = () => {
                   id="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white outline-none transition-all text-slate-900 placeholder:text-slate-400 text-sm"
+                  className="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white outline-none transition-all text-slate-900 placeholder:text-slate-400 text-sm"
                   placeholder="Enter your password"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

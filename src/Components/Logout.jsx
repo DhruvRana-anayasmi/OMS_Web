@@ -1,9 +1,10 @@
 // Logout.jsx
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { useUser } from '../Context/UserContext';
 const Logout = () => {
     const navigate = useNavigate();
+    const { user } = useUser();
 
     const handleLogout = () => {
         sessionStorage.removeItem('token');
@@ -47,8 +48,7 @@ const Logout = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-slate-500">Active Session</p>
-                                    <p className="text-base font-semibold text-slate-900 mt-0.5">Admin User</p>
-                                    <p className="text-xs text-slate-400 mt-0.5">admin@storefront.com</p>
+                                    <p className="text-base font-semibold text-slate-900 mt-0.5">{user?.username || 'Admin User'}</p>
                                 </div>
                             </div>
                         </div>

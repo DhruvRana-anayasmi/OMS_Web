@@ -13,8 +13,9 @@ const Product = (props) => {
   const [products, setproducts] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [selectedCart, setSelectedCart] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const { setOrderItems } = useContext(OrderContext);
-  
+
   const handleCartChange = (product, quantity) => {
     setSelectedCart(prev => ({
       ...prev,
@@ -23,27 +24,27 @@ const Product = (props) => {
   };
 
   const addProduct = () => {
-    if(!document.getElementById("productName").value || !document.getElementById("manufacturingDate").value || !document.getElementById("expirationDate").value || !document.getElementById("price").value){
+    if (!document.getElementById("productName").value || !document.getElementById("manufacturingDate").value || !document.getElementById("expirationDate").value || !document.getElementById("price").value) {
       alert("Please fill in all fields.");
       return;
     }
     axios({
-        method: "post",
-        url: `${import.meta.env.VITE_BASE_URL}/add`,
-        params: {},
-        data: {
-          productName: document.getElementById("productName").value,
-          manufacturingDate: document.getElementById("manufacturingDate").value,
-          expirationDate: document.getElementById("expirationDate").value,
-          price: document.getElementById("price").value
-        },
-        headers: { Authorization: `Bearer ${getToken()}` },
-      }).then((res) => {
-        window.location.reload();
-      }).catch((err) => {
-        console.error(err);
-        alert("Cannot add product/s.");
-      });
+      method: "post",
+      url: `${import.meta.env.VITE_BASE_URL}/add`,
+      params: {},
+      data: {
+        productName: document.getElementById("productName").value,
+        manufacturingDate: document.getElementById("manufacturingDate").value,
+        expirationDate: document.getElementById("expirationDate").value,
+        price: document.getElementById("price").value
+      },
+      headers: { Authorization: `Bearer ${getToken()}` },
+    }).then((res) => {
+      window.location.reload();
+    }).catch((err) => {
+      console.error(err);
+      alert("Cannot add product/s.");
+    });
   }
 
   const handleOrder = () => {
@@ -53,28 +54,25 @@ const Product = (props) => {
   }
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${import.meta.env.VITE_BASE_URL}/products`,
-      params: {},
-      data: {},
-      headers: { Authorization: `Bearer ${getToken()}` },
-    }).then((res) => {
-      setproducts(res.data);
+    setIsLoading(true);
+    Promise.all([
+      axios({
+        method: "get",
+        url: `${import.meta.env.VITE_BASE_URL}/products`,
+        headers: { Authorization: `Bearer ${getToken()}` },
+      }),
+      axios({
+        method: "get",
+        url: `${import.meta.env.VITE_BASE_URL}/inventory`,
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+    ]).then(([productsRes, inventoryRes]) => {
+      setproducts(productsRes.data);
+      setInventory(inventoryRes.data);
     }).catch((err) => {
       console.error(err);
-    });
-    
-    axios({
-      method: "get",
-      url: `${import.meta.env.VITE_BASE_URL}/inventory`,
-      params: {},
-      data: {},
-      headers: { Authorization: `Bearer ${getToken()}` },
-    }).then((res) => {
-      setInventory(res.data);
-    }).catch((err) => {
-      console.error(err);
+    }).finally(() => {
+      setIsLoading(false);
     });
   }, []);
 
@@ -82,7 +80,7 @@ const Product = (props) => {
   const cartTotal = Object.values(selectedCart)
     .filter(item => item.quantity > 0)
     .reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  
+
   const cartItemCount = Object.values(selectedCart)
     .filter(item => item.quantity > 0)
     .length;
@@ -98,10 +96,10 @@ const Product = (props) => {
                 {props.isAdmin ? "Management" : "Collection"}
               </span>
               <div className="flex items-baseline gap-3">
-                <h1 className="text-3xl font-light text-slate-900">
+                <h1 className="hero text-3xl font-light text-slate-900">
                   {props.isAdmin ? "Admin" : "Premium"}
                 </h1>
-                <h2 className="text-4xl font-black uppercase tracking-tight text-slate-900">
+                <h2 className="text-4xl section font-black uppercase tracking-tight text-slate-900">
                   {props.isAdmin ? "Panel" : "Products"}
                 </h2>
               </div>
@@ -123,7 +121,7 @@ const Product = (props) => {
                     {cartItemCount} {cartItemCount === 1 ? 'item' : 'items'}
                   </span>
                 </div>
-                <Link to='order' 
+                <Link to='order'
                   onClick={handleOrder}
                   className="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 ease-out flex items-center gap-2 shadow-lg active:scale-[0.98]"
                 >
@@ -147,7 +145,7 @@ const Product = (props) => {
                 Managing <span className="font-bold text-slate-900">{products.length}</span> products
               </span>
             </div>
-            <button 
+            <button
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ease-out flex items-center gap-2 shadow-sm active:scale-[0.98]"
               onClick={() => setModal(true)}
             >
@@ -164,11 +162,11 @@ const Product = (props) => {
       {modal && (
         <div className='fixed inset-0 z-50 flex items-center justify-center'>
           {/* Backdrop */}
-          <div 
+          <div
             className='absolute inset-0 bg-slate-900/40 backdrop-blur-sm'
             onClick={() => setModal(false)}
           />
-          
+
           {/* Modal Container */}
           <div className='relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200'>
             {/* Modal Header */}
@@ -178,7 +176,7 @@ const Product = (props) => {
                   <h3 className='text-lg font-semibold text-slate-900'>Add New Product</h3>
                   <p className='text-sm text-slate-500 mt-0.5'>Create a new product in your inventory</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setModal(false)}
                   className='text-slate-400 hover:text-slate-600 transition-colors p-1'
                 >
@@ -197,9 +195,9 @@ const Product = (props) => {
                   <label htmlFor="productName" className='text-xs font-semibold uppercase tracking-wider text-slate-500'>
                     Product Name
                   </label>
-                  <input 
-                    type="text" 
-                    id="productName" 
+                  <input
+                    type="text"
+                    id="productName"
                     className='w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-900 placeholder:text-slate-400'
                     placeholder="e.g. Organic Almonds"
                   />
@@ -211,9 +209,9 @@ const Product = (props) => {
                     <label htmlFor="manufacturingDate" className='text-xs font-semibold uppercase tracking-wider text-slate-500'>
                       Mfg. Date
                     </label>
-                    <input 
-                      type="date" 
-                      id="manufacturingDate" 
+                    <input
+                      type="date"
+                      id="manufacturingDate"
                       className='w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-900'
                     />
                   </div>
@@ -221,9 +219,9 @@ const Product = (props) => {
                     <label htmlFor="expirationDate" className='text-xs font-semibold uppercase tracking-wider text-slate-500'>
                       Exp. Date
                     </label>
-                    <input 
-                      type="date" 
-                      id="expirationDate" 
+                    <input
+                      type="date"
+                      id="expirationDate"
                       className='w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-900'
                     />
                   </div>
@@ -236,10 +234,10 @@ const Product = (props) => {
                   </label>
                   <div className='relative'>
                     <span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium'>₹</span>
-                    <input 
-                      type="number" 
-                      id="price" 
-                      className='w-full pl-8 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-900' 
+                    <input
+                      type="number"
+                      id="price"
+                      className='w-full pl-8 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-slate-900'
                       placeholder='0.00'
                       min="0"
                       step="0.01"
@@ -251,14 +249,14 @@ const Product = (props) => {
 
             {/* Modal Footer */}
             <div className='px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3'>
-              <button 
+              <button
                 type="button"
                 className='px-5 py-2 text-sm font-medium text-slate-600 hover:bg-white hover:text-slate-900 rounded-lg transition-colors'
                 onClick={() => setModal(false)}
               >
                 Cancel
               </button>
-              <button 
+              <button
                 type="submit"
                 className='px-6 py-2 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-all duration-200 ease-out flex items-center gap-2 active:scale-[0.98]'
                 onClick={addProduct}
@@ -275,7 +273,32 @@ const Product = (props) => {
 
       {/* Products Grid */}
       <div className="max-w-[1400px] mx-auto px-8 py-8">
-        {products.length > 0 ? (
+        {isLoading ? (
+          // Skeleton Loader
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+            {[...Array(10)].map((_, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden animate-pulse">
+                <div className="p-6 flex flex-col gap-5">
+                  <div className="flex justify-between items-start">
+                    <div className="h-6 bg-slate-200 rounded-md w-1/2"></div>
+                    <div className="h-6 bg-slate-200 rounded-md w-1/4"></div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-slate-200 rounded-md w-3/4"></div>
+                    <div className="h-4 bg-slate-200 rounded-md w-5/6"></div>
+                  </div>
+                  <div className="mt-4 border-t border-slate-100 pt-5 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <div className="h-4 bg-slate-200 rounded-md w-1/3"></div>
+                      <div className="h-6 bg-slate-200 rounded-md w-1/4"></div>
+                    </div>
+                    <div className="h-12 bg-slate-200 rounded-xl w-full mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
           <>
             {/* Grid Header */}
             <div className="flex justify-between items-center mb-6">
@@ -301,11 +324,11 @@ const Product = (props) => {
             {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {products.map(product => (
-                <ProductItem 
+                <ProductItem
                   isAdmin={props.isAdmin}
                   stock={inventory.find(item => item.productId === product.productId)?.quantity || 0}
-                  key={product.productId} 
-                  product={product} 
+                  key={product.productId}
+                  product={product}
                   onCartChange={handleCartChange}
                 />
               ))}
@@ -322,7 +345,7 @@ const Product = (props) => {
             <h3 className="text-lg font-semibold text-slate-900 mb-1">No products found</h3>
             <p className="text-slate-500 text-sm mb-4">Get started by adding your first product</p>
             {props.isAdmin && (
-              <button 
+              <button
                 onClick={() => setModal(true)}
                 className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium text-sm"
               >
@@ -346,7 +369,7 @@ const Product = (props) => {
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Authentication Required</h2>
         <p className="text-slate-500 mb-6">Please log in to access the product catalog</p>
-        <button 
+        <button
           onClick={() => navigate('/login')}
           className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg active:scale-[0.98]"
         >

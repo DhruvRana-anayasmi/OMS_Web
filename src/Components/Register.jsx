@@ -102,24 +102,13 @@ const Register = () => {
     const strengthColor = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#6366f1'][passStrength];
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4"
+        <div className="min-h-[90vh] flex items-center justify-center bg-slate-50 sm:p-2"
             style={{ fontFamily: "'Inter', 'Poppins', sans-serif" }}>
 
-            <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
+            <div className="w-full max-w-5xl bg-white rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border-0 sm:border border-slate-100">
 
                 {/* ── MOBILE TOP STRIP (visible only on mobile) ── */}
-                <div
-                    className="md:hidden flex items-center gap-3 px-6 py-4"
-                    style={{ background: 'linear-gradient(135deg, #4f46e5, #6366f1)' }}
-                >
-                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center border border-white/30">
-                        <span className="text-white font-extrabold text-base">S</span>
-                    </div>
-                    <div>
-                        <p className="text-white font-extrabold text-sm leading-none">StockPop</p>
-                        <p className="text-indigo-200 text-[0.55rem] font-semibold tracking-widest uppercase">Order Management</p>
-                    </div>
-                </div>
+
 
                 {/* ── LEFT PANEL: Branding (desktop only) ── */}
                 <div
@@ -176,18 +165,18 @@ const Register = () => {
                 </div>
 
                 {/* ── RIGHT PANEL: Form ── */}
-                <div className="md:w-8/12 p-6 md:p-10 flex flex-col justify-center">
+                <div className="w-full md:w-8/12 p-4 sm:p-6 md:p-10 flex flex-col justify-center min-w-0">
 
                     {/* Header */}
-                    <div className="mb-7">
+                    <div className="mb-5">
                         <h1 className="text-2xl font-bold text-slate-900 mb-1">Create your account</h1>
                         <p className="text-slate-500 text-sm">Fill in the details below to get started.</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-5 w-full">
+                    <form onSubmit={handleSubmit} className="space-y-3 w-full">
 
                         {/* Username */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="username" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                                 Username
                             </label>
@@ -218,7 +207,7 @@ const Register = () => {
                         </div>
 
                         {/* Password */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="password" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                                 Password
                             </label>
@@ -281,7 +270,7 @@ const Register = () => {
                         </div>
 
                         {/* Confirm Password */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                                 Confirm Password
                             </label>

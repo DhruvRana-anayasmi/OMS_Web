@@ -68,7 +68,7 @@ export default function App() {
       >
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* 3-column grid: left | center | right */}
-          <div className="grid h-16" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
+          <div className="grid h-16 relative" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
 
             {/* ── LEFT: Brand ── */}
             <div className="flex items-center">
@@ -88,30 +88,30 @@ export default function App() {
 
             {/* ── CENTER: Nav Links (desktop) ── */}
             <div className="hidden md:flex items-center justify-center">
-                 {
+              {
                 isAuthenticated() && <div>
-              <div className="flex items-center gap-1 bg-slate-100 px-1.5 py-1 rounded-xl border border-slate-200">
-               
-                   <Link
-                  to="/"
-                  className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm rounded-lg transition-all duration-200"
-                 >
-                   <HomeIcon size={16} strokeWidth={2} />
-                  <span>Home</span>
-                </Link>
+                  <div className="flex items-center gap-1 bg-slate-100 px-1.5 py-1 rounded-xl border border-slate-200">
 
-                {isLoggedIn && (
-                  <Link
-                  to="/history"
-                  className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm rounded-lg transition-all duration-200"
-                  >
-                    <ShoppingBag size={16} strokeWidth={2} />
-                    <span>Orders</span>
-                  </Link>
-                )}
+                    <Link
+                      to="/"
+                      className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm rounded-lg transition-all duration-200"
+                    >
+                      <HomeIcon size={16} strokeWidth={2} />
+                      <span>Home</span>
+                    </Link>
+
+                    {isLoggedIn && (
+                      <Link
+                        to="/history"
+                        className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-slate-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm rounded-lg transition-all duration-200"
+                      >
+                        <ShoppingBag size={16} strokeWidth={2} />
+                        <span>Orders</span>
+                      </Link>
+                    )}
+                  </div>
                 </div>
-              </div>
-                }
+              }
             </div>
 
             {/* ── RIGHT: User / Auth ── */}
@@ -120,15 +120,7 @@ export default function App() {
                 <>
                   {/* Desktop: logout + avatar pill */}
                   <div className="hidden sm:flex items-center gap-2">
-                    <Link
-                      to="/logout"
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200"
-                    >
-                      <LogOut size={16} strokeWidth={2} />
-                      <span className="hidden lg:inline">Logout</span>
-                    </Link>
 
-                    <div className="w-px h-5 bg-slate-200" />
 
                     {/* Avatar + Dropdown */}
                     <div className="relative group">
@@ -152,7 +144,6 @@ export default function App() {
                         <div className="px-4 py-3 border-b border-slate-100">
                           <p className="text-[0.7rem] font-semibold text-slate-400 uppercase tracking-wide">Signed in as</p>
                           <p className="text-sm font-bold text-slate-800 mt-0.5 truncate">{user?.username || 'User'}</p>
-                          <p className="text-xs text-slate-500 truncate">{user?.email || 'user@example.com'}</p>
                         </div>
                         <div className="py-1">
                           <Link
@@ -183,7 +174,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Mobile: hamburger */}
+                  {/* Mobile: hamburger — always at the far right */}
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     className="sm:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
@@ -191,31 +182,11 @@ export default function App() {
                   >
                     {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                   </button>
+
                 </>
               ) : (
                 /* Non-authenticated */
-                <div className="flex items-center gap-2">
-                  <Link
-                    to="/login"
-                    className="hidden sm:inline text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="px-4 py-2 text-sm font-semibold text-white rounded-lg shadow-sm hover:shadow transition-all duration-200 active:scale-[0.97]"
-                    style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
-                  >
-                    Get Started
-                  </Link>
-                  <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="sm:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
-                    aria-label="Toggle menu"
-                  >
-                    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                  </button>
-                </div>
+                null
               )}
             </div>
           </div>
@@ -226,17 +197,17 @@ export default function App() {
               }`}
           >
             <div className="pb-4 pt-2 border-t border-slate-100 space-y-1">
-              <Link
-                to="/"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <HomeIcon size={18} strokeWidth={2} />
-                {isAuthenticated() ? "Home" : ""}
-              </Link>
 
               {isLoggedIn && (
                 <>
+                  <Link
+                    to="/"
+                    className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <HomeIcon size={18} strokeWidth={2} />
+                    {isAuthenticated() ? "Home" : ""}
+                  </Link>
                   <Link
                     to="/history"
                     className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
@@ -256,7 +227,6 @@ export default function App() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-slate-800 truncate">{user?.username || 'User'}</p>
-                      <p className="text-xs text-slate-500 truncate">{user?.email || 'user@example.com'}</p>
                     </div>
                   </div>
 

@@ -73,10 +73,10 @@ const ProductItem = (props) => {
   return (
     <div className="group p-2">
       <div className="relative bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 ease-out border border-slate-100 overflow-hidden">
-        
+
         {/* Premium accent line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-600/80" />
-        
+
         <div className="p-6 flex flex-col gap-5">
           {/* Header with enhanced typography */}
           <div className="flex justify-between items-start">
@@ -126,10 +126,9 @@ const ProductItem = (props) => {
                 <span className="text-sm font-bold text-slate-700">{props.stock} units</span>
               </div>
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div 
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    isLowStock ? 'bg-amber-500' : 'bg-emerald-500'
-                  }`}
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${isLowStock ? 'bg-amber-500' : 'bg-emerald-500'
+                    }`}
                   style={{ width: `${stockPercentage}%` }}
                 />
               </div>
@@ -145,7 +144,7 @@ const ProductItem = (props) => {
               <span className="font-medium">Only {props.stock} left in stock — order soon</span>
             </div>
           )}
-          
+
           {isOutOfStock && (
             <div className="flex items-center justify-center gap-2 text-xs bg-slate-100 text-slate-500 px-4 py-3 rounded-xl border border-slate-200">
               <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -161,10 +160,10 @@ const ProductItem = (props) => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-slate-600">Current Stock</span>
-                  <span className="text-lg font-bold text-slate-900">{inv}</span>
+                  <span className="text-lg font-bold text-slate-900">{inv ? inv : '...'}</span>
                 </div>
                 {show ? (
-                  <button 
+                  <button
                     className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-xl transition-all duration-200 ease-out flex items-center justify-center gap-2 group"
                     onClick={changeStock}
                   >
@@ -176,17 +175,17 @@ const ProductItem = (props) => {
                 ) : (
                   <div className="flex gap-3">
                     <div className="relative flex-1">
-                      <input 
-                        type="number" 
-                        value={tempInv} 
-                        onChange={(e) => setTempInv(e.target.value)} 
+                      <input
+                        type="number"
+                        value={tempInv}
+                        onChange={(e) => setTempInv(e.target.value)}
                         className="w-full px-4 py-3.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-emerald-500 transition-colors text-center text-lg font-semibold"
                         autoFocus
                         min="0"
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">Qty</span>
                     </div>
-                    <button 
+                    <button
                       className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-200 ease-out flex items-center gap-2 shadow-lg shadow-emerald-600/20"
                       onClick={setInventory}
                     >
@@ -210,9 +209,9 @@ const ProductItem = (props) => {
                     </svg>
                     Buy Now
                   </button>
-                  
+
                   {showCart ? (
-                    <button 
+                    <button
                       className="px-6 py-3.5 border-2 border-slate-200 hover:border-slate-300 bg-white text-slate-700 font-semibold rounded-xl transition-all duration-200 ease-out flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98]"
                       onClick={handleCart}
                     >
@@ -223,7 +222,7 @@ const ProductItem = (props) => {
                     </button>
                   ) : (
                     <div className="flex items-center bg-slate-900 rounded-xl shadow-lg">
-                      <button 
+                      <button
                         className="w-12 h-12 text-white hover:bg-slate-800 rounded-l-xl transition-colors font-bold text-lg flex items-center justify-center disabled:opacity-50"
                         onClick={handleReduceCart}
                         disabled={quantity <= 1}
@@ -233,7 +232,7 @@ const ProductItem = (props) => {
                       <div className="w-12 text-center font-semibold text-white border-x border-slate-700">
                         <span className="text-lg">{quantity}</span>
                       </div>
-                      <button 
+                      <button
                         className="w-12 h-12 text-white hover:bg-slate-800 rounded-r-xl transition-colors font-bold text-lg flex items-center justify-center"
                         onClick={handleIncreaseCart}
                       >
@@ -246,7 +245,7 @@ const ProductItem = (props) => {
             )
           )}
         </div>
-        
+
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.02] pattern-dots" />
       </div>
