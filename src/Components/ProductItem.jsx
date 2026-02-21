@@ -210,7 +210,7 @@ const ProductItem = (props) => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-slate-600">Current Stock</span>
-                  <span className="text-lg font-bold text-slate-900">{inv ? inv : '...'}</span>
+                  <span className="text-lg font-bold text-slate-900">{inv ? inv : 0}</span>
                 </div>
                 {show ? (
                   <div className="flex flex-col gap-2">

@@ -13,6 +13,7 @@ const Product = (props) => {
   const [inventory, setInventory] = useState([]);
   const [selectedCart, setSelectedCart] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState('latest');
   const { setOrderItems } = useContext(OrderContext);
 
   const handleCartChange = (product, quantity) => {
@@ -74,6 +75,12 @@ const Product = (props) => {
       setIsLoading(false);
     });
   }, []);
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortBy === 'name') return a.productName.localeCompare(b.productName);
+    if (sortBy === 'price') return parseFloat(a.price) - parseFloat(b.price);
+    return b.productId - a.productId; // 'latest'
+  });
 
   // Calculate cart total
   const cartTotal = Object.values(selectedCart)
@@ -159,7 +166,7 @@ const Product = (props) => {
 
 
       {modal && <>
-        
+
         <div className='fixed inset-0 z-50 flex items-center justify-center'>
           {/* Backdrop */}
           <div
@@ -305,25 +312,34 @@ const Product = (props) => {
               <p className="text-sm text-slate-500">
                 Showing <span className="font-semibold text-slate-900">{products.length}</span> products
               </p>
-              {/* <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-400">
                 <span>Sort by:</span>
-                <button className="font-semibold text-slate-900 hover:text-emerald-600 transition-colors">
+                <button
+                  onClick={() => setSortBy('latest')}
+                  className={`transition-colors ${sortBy === 'latest' ? 'font-bold text-slate-900' : 'font-medium hover:text-emerald-600'}`}
+                >
                   Latest
                 </button>
                 <span>•</span>
-                <button className="hover:text-emerald-600 transition-colors">
+                <button
+                  onClick={() => setSortBy('price')}
+                  className={`transition-colors ${sortBy === 'price' ? 'font-bold text-slate-900' : 'font-medium hover:text-emerald-600'}`}
+                >
                   Price
                 </button>
                 <span>•</span>
-                <button className="hover:text-emerald-600 transition-colors">
+                <button
+                  onClick={() => setSortBy('name')}
+                  className={`transition-colors ${sortBy === 'name' ? 'font-bold text-slate-900' : 'font-medium hover:text-emerald-600'}`}
+                >
                   Name
                 </button>
-              </div> */}
+              </div>
             </div>
 
             {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-              {products.map(product => (
+              {sortedProducts.map(product => (
                 <ProductItem
                   isAdmin={props.isAdmin}
                   stock={inventory.find(item => item.productId === product.productId)?.quantity || 0}

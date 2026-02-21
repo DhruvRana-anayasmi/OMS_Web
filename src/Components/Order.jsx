@@ -26,9 +26,8 @@ const Order = () => {
   const subtotal = OrderItems.reduce((sum, item) => 
     sum + (item.product.price * item.quantity), 0
   );
-  
-  const shipping = subtotal > 500 ? 0 : 40;
-  const tax = subtotal * 0.05; // 5% tax
+  const shipping=0;
+  const tax = 0// Assuming 5% tax
   const total = subtotal + shipping + tax;
 
   const handleorder = () => {
@@ -156,19 +155,16 @@ const Order = () => {
                     
                     <div className="flex justify-between text-sm">
                       <span className="text-slate-600">Shipping</span>
-                      {shipping === 0 ? (
                         <span className="text-emerald-600 font-medium">FREE</span>
-                      ) : (
-                        <span className="font-medium text-slate-900">₹{shipping.toFixed(2)}</span>
-                      )}
                     </div>
                     
                     <div className="flex justify-between text-sm">
                       <span className="text-slate-600">Tax (5%)</span>
-                      <span className="font-medium text-slate-900">₹{tax.toFixed(2)}</span>
+                      <span className="font-medium text-slate-900">₹0.00</span>
                     </div>
 
-                    {shipping > 0 && (
+                  {/* Shipping Progress Bar */}
+                  {/* {shipping > 0 && (
                       <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-xs">
                         <p className="text-amber-800">
                           Add ₹{(500 - subtotal).toFixed(2)} more to get free shipping
@@ -180,7 +176,7 @@ const Order = () => {
                           ></div>
                         </div>
                       </div>
-                    )}
+                    )} */}
 
                     <div className="border-t border-slate-100 pt-4 mt-2">
                       <div className="flex justify-between items-center">

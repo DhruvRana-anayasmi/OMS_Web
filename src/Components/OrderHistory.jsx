@@ -13,13 +13,12 @@ const OrderHistory = () => {
     useEffect(() => {
         setIsLoading(true);
         axios({
-            method: "get",
+            method: "GET",
             url: `${import.meta.env.VITE_BASE_URL}/orders`,
             params: {},
             data: {},
             headers: { Authorization: `Bearer ${getToken()}` },
         }).then((res) => {
-            console.log(res.data);
             setOrders(res.data);
             setIsLoading(false);
         }).catch((err) => {
@@ -174,7 +173,7 @@ const OrderHistory = () => {
                                         key={order.orderId} 
                                         className="bg-white rounded-xl border border-slate-200 hover:shadow-md transition-all duration-200 overflow-hidden"
                                     >
-                                        <OrderItem orderId={order.orderId} order={order.items} />
+                                        <OrderItem orderId={order.orderId} date={order.createdAt} order={order.items} />
                                     </div>
                                 ))}
                             </div>

@@ -2,23 +2,26 @@
 import React, { useState } from 'react'
 import { ChevronDown, ChevronUp, Package, Calendar, Truck, CheckCircle, XCircle } from 'lucide-react'
 
-const OrderItem = ({ orderId, order }) => {
+const OrderItem = ({ orderId, date,order }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Calculate order totals
     const itemCount = order.length;
     const subtotal = order.reduce((sum, item) => sum + (item.price), 0);
     
-    // Mock order date (you can replace with actual date from API)
-    const orderDate = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000);
-    const formattedDate = orderDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+  let inputDate = "2026-02-21T08:51:42.994162321";
+
+// Trim nanoseconds (if present)
+let date1 = new Date(inputDate.slice(0, 23));
+
+let formatted = new Intl.DateTimeFormat('en-GB', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+}).format(date1);
 
     // Mock status (you can replace with actual status from API)
-    const status = 'processing';
+    const status = order.status || 'processing'; // Example statuses: 'delivered', 'processing', 'cancelled'
     
     const statusConfig = {
         delivered: { 
@@ -70,7 +73,7 @@ const OrderItem = ({ orderId, order }) => {
                             <div className="flex items-center gap-4 text-xs text-slate-500">
                                 <div className="flex items-center gap-1">
                                     <Calendar size={12} />
-                                    <span>{formattedDate}</span>
+                                    <span>{formatted}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Package size={12} />

@@ -67,8 +67,8 @@ export default function App() {
         style={{ fontFamily: "'Inter', 'Poppins', sans-serif" }}
       >
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          {/* 3-column grid: left | center | right */}
-          <div className="grid h-16 relative" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
+          {/* 3-column flex/grid: left | center | right */}
+          <div className="flex md:grid items-center justify-between h-16 relative md:grid-cols-[1fr_auto_1fr]">
 
             {/* ── LEFT: Brand ── */}
             <div className="flex items-center">
@@ -153,13 +153,15 @@ export default function App() {
                             <CircleUser size={15} />
                             Profile Settings
                           </Link>
-                          <Link
-                            to="/history"
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
-                          >
-                            <ShoppingBag size={15} />
-                            Order History
-                          </Link>
+                          <AuthWrapper>
+                            <Link
+                              to="/history"
+                              className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
+                            >
+                              <ShoppingBag size={15} />
+                              Order History
+                            </Link>
+                          </AuthWrapper>
                         </div>
                         <div className="border-t border-slate-100 pt-1">
                           <Link
@@ -208,14 +210,16 @@ export default function App() {
                     <HomeIcon size={18} strokeWidth={2} />
                     {isAuthenticated() ? "Home" : ""}
                   </Link>
-                  <Link
-                    to="/history"
-                    className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <ShoppingBag size={18} strokeWidth={2} />
-                    Orders
-                  </Link>
+                  <AuthWrapper>
+                    <Link
+                      to="/history"
+                      className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <ShoppingBag size={18} strokeWidth={2} />
+                      Orders
+                    </Link>
+                  </AuthWrapper>
 
                   {/* User card */}
                   <div className="mx-1 mt-2 px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
