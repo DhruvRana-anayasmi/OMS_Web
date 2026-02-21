@@ -9,6 +9,7 @@ const OrderHistory = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('all');
     const [sortBy, setSortBy] = useState('newest');
+    const [isSortOpen, setIsSortOpen] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -32,17 +33,17 @@ const OrderHistory = () => {
         .filter(order => filterStatus === 'all' ? true : order.status === filterStatus)
         .sort((a, b) => {
             if (sortBy === 'newest') {
-                return new Date(b.orderDate) - new Date(a.orderDate);
+                return new Date(b.createdAt) - new Date(a.createdAt);
             } else {
-                return new Date(a.orderDate) - new Date(b.orderDate);
+                return new Date(a.createdAt) - new Date(b.createdAt);
             }
         });
 
     // Calculate statistics
     const totalOrders = orders.length;
     const totalItems = orders.reduce((sum, order) => sum + order.items.length, 0);
-    const totalSpent = orders.reduce((sum, order) => 
-        sum + order.items.reduce((orderSum, item) => 
+    const totalSpent = orders.reduce((sum, order) =>
+        sum + order.items.reduce((orderSum, item) =>
             orderSum + (item.price), 0
         ), 0
     );
@@ -50,7 +51,7 @@ const OrderHistory = () => {
     return (
         <div className="min-h-screen bg-slate-50 py-8">
             <div className="max-w-[1400px] mx-auto px-6">
-                
+
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div className="flex items-center gap-3">
@@ -91,44 +92,40 @@ const OrderHistory = () => {
                                     <Filter size={16} className="text-slate-400" />
                                     <span className="text-sm font-medium text-slate-600">Filter:</span>
                                 </div>
-                                <div className="flex gap-2">
-                                    <button 
+                                <div className="flex flex-wrap max-width-screen-sm gap-2">
+                                    <button
                                         onClick={() => setFilterStatus('all')}
-                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
-                                            filterStatus === 'all' 
-                                                ? 'bg-emerald-700 text-white shadow-sm' 
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
+                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${filterStatus === 'all'
+                                            ? 'bg-emerald-700 text-white shadow-sm'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
                                     >
                                         All
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => setFilterStatus('delivered')}
-                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
-                                            filterStatus === 'delivered' 
-                                                ? 'bg-emerald-700 text-white shadow-sm' 
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
+                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${filterStatus === 'delivered'
+                                            ? 'bg-emerald-700 text-white shadow-sm'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
                                     >
                                         Delivered
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => setFilterStatus('processing')}
-                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
-                                            filterStatus === 'processing' 
-                                                ? 'bg-emerald-700 text-white shadow-sm' 
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
+                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${filterStatus === 'processing'
+                                            ? 'bg-emerald-700 text-white shadow-sm'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
                                     >
                                         Processing
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => setFilterStatus('cancelled')}
-                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
-                                            filterStatus === 'cancelled' 
-                                                ? 'bg-red-600 text-white shadow-sm' 
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
+                                        className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${filterStatus === 'cancelled'
+                                            ? 'bg-red-600 text-white shadow-sm'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
                                     >
                                         Cancelled
                                     </button>
@@ -137,16 +134,43 @@ const OrderHistory = () => {
 
                             <div className="flex items-center gap-3">
                                 <span className="text-sm font-medium text-slate-600">Sort by:</span>
-                                <div className="relative">
-                                    <select 
-                                        value={sortBy}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        className="appearance-none bg-slate-100 border border-slate-200 text-slate-700 text-sm rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                <div className="relative z-20">
+                                    <button
+                                        onClick={() => setIsSortOpen(!isSortOpen)}
+                                        className="flex items-center justify-between w-[150px] bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl px-4 py-2 hover:border-emerald-500 hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500/20 active:scale-[0.98]"
                                     >
-                                        <option value="newest">Newest First</option>
-                                        <option value="oldest">Oldest First</option>
-                                    </select>
-                                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                                        <span>{sortBy === 'newest' ? 'Newest First' : 'Oldest First'}</span>
+                                        <ChevronDown size={16} className={`text-slate-400 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    {isSortOpen && (
+                                        <>
+                                            <div
+                                                className="fixed inset-0 z-30"
+                                                onClick={() => setIsSortOpen(false)}
+                                            />
+                                            <div className="absolute right-0 top-full mt-2 w-full bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 py-1.5 z-40 transform origin-top transition-all animate-in fade-in slide-in-from-top-2 duration-200">
+                                                <button
+                                                    onClick={() => {
+                                                        setSortBy('newest');
+                                                        setIsSortOpen(false);
+                                                    }}
+                                                    className={`flex items-center w-full text-left px-4 py-2.5 text-sm transition-all ${sortBy === 'newest' ? 'bg-emerald-50/50 text-emerald-700 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'}`}
+                                                >
+                                                    Newest First
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setSortBy('oldest');
+                                                        setIsSortOpen(false);
+                                                    }}
+                                                    className={`flex items-center w-full text-left px-4 py-2.5 text-sm transition-all ${sortBy === 'oldest' ? 'bg-emerald-50/50 text-emerald-700 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'}`}
+                                                >
+                                                    Oldest First
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -169,8 +193,8 @@ const OrderHistory = () => {
                         {filteredOrders.length > 0 ? (
                             <div className="space-y-4">
                                 {filteredOrders.map((order) => (
-                                    <div 
-                                        key={order.orderId} 
+                                    <div
+                                        key={order.orderId}
                                         className="bg-white rounded-xl border border-slate-200 hover:shadow-md transition-all duration-200 overflow-hidden"
                                     >
                                         <OrderItem orderId={order.orderId} date={order.createdAt} order={order.items} />
@@ -184,12 +208,12 @@ const OrderHistory = () => {
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 mb-2">No orders found</h3>
                                 <p className="text-slate-500 text-sm mb-8 max-w-md mx-auto">
-                                    {orders.length > 0 
+                                    {orders.length > 0
                                         ? "No orders match your current filter criteria. Try adjusting your filters."
                                         : "You haven't placed any orders yet. Start shopping to see your order history here."}
                                 </p>
                                 {orders.length === 0 && (
-                                    <button 
+                                    <button
                                         onClick={() => window.location.href = '/'}
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 text-white text-sm font-semibold rounded-xl hover:bg-emerald-800 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98]"
                                     >
@@ -198,7 +222,7 @@ const OrderHistory = () => {
                                     </button>
                                 )}
                                 {orders.length > 0 && filterStatus !== 'all' && (
-                                    <button 
+                                    <button
                                         onClick={() => setFilterStatus('all')}
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-all duration-200"
                                     >

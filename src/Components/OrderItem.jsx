@@ -2,40 +2,38 @@
 import React, { useState } from 'react'
 import { ChevronDown, ChevronUp, Package, Calendar, Truck, CheckCircle, XCircle } from 'lucide-react'
 
-const OrderItem = ({ orderId, date,order }) => {
+const OrderItem = ({ orderId, date, order }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Calculate order totals
     const itemCount = order.length;
     const subtotal = order.reduce((sum, item) => sum + (item.price), 0);
-    
-  let inputDate = "2026-02-21T08:51:42.994162321";
 
-// Trim nanoseconds (if present)
-let date1 = new Date(inputDate.slice(0, 23));
+    // Trim nanoseconds (if present)
+    let date1 = new Date(date.slice(0, 23));
 
-let formatted = new Intl.DateTimeFormat('en-GB', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric'
-}).format(date1);
+    let formatted = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    }).format(date1);
 
     // Mock status (you can replace with actual status from API)
     const status = order.status || 'processing'; // Example statuses: 'delivered', 'processing', 'cancelled'
-    
+
     const statusConfig = {
-        delivered: { 
-            color: 'bg-emerald-100 text-emerald-700', 
+        delivered: {
+            color: 'bg-emerald-100 text-emerald-700',
             icon: CheckCircle,
             text: 'Delivered'
         },
-        processing: { 
-            color: 'bg-amber-100 text-amber-700', 
+        processing: {
+            color: 'bg-amber-100 text-amber-700',
             icon: Truck,
             text: 'Processing'
         },
-        cancelled: { 
-            color: 'bg-red-100 text-red-700', 
+        cancelled: {
+            color: 'bg-red-100 text-red-700',
             icon: XCircle,
             text: 'Cancelled'
         }
@@ -46,20 +44,19 @@ let formatted = new Intl.DateTimeFormat('en-GB', {
     return (
         <div className="w-full">
             {/* Order Header */}
-            <div 
+            <div
                 className="p-6 cursor-pointer hover:bg-slate-50 transition-colors"
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     {/* Left: Order Info */}
                     <div className="flex items-start gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                            status === 'delivered' ? 'bg-emerald-100' :
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${status === 'delivered' ? 'bg-emerald-100' :
                             status === 'processing' ? 'bg-amber-100' : 'bg-red-100'
-                        }`}>
+                            }`}>
                             <Package size={20} className={
                                 status === 'delivered' ? 'text-emerald-700' :
-                                status === 'processing' ? 'text-amber-700' : 'text-red-700'
+                                    status === 'processing' ? 'text-amber-700' : 'text-red-700'
                             } />
                         </div>
                         <div>
@@ -113,7 +110,7 @@ let formatted = new Intl.DateTimeFormat('en-GB', {
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-semibold text-slate-900">₹{item.price/item.quantity}</p>
+                                    <p className="font-semibold text-slate-900">₹{item.price / item.quantity}</p>
                                     <p className="text-xs text-slate-500">₹{(item.price).toFixed(2)} total</p>
                                 </div>
                             </div>
@@ -141,7 +138,7 @@ let formatted = new Intl.DateTimeFormat('en-GB', {
                         <button className="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow active:scale-[0.98]">
                             Track Order
                         </button>
-                        
+
                     </div>
                 </div>
             )}

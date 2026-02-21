@@ -15,6 +15,7 @@ import Register from './Components/Register.jsx'
 import { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { useUser } from './Context/UserContext.jsx';
+import Profile from './Components/Profile.jsx';
 import {
   BrowserRouter,
   Routes,
@@ -280,6 +281,7 @@ export default function App() {
             <Route path="/logout" element={<AuthWrapper><Logout /></AuthWrapper>} />
             <Route path="/history" element={<AuthWrapper><OrderHistory /></AuthWrapper>} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<AuthWrapper><Profile /></AuthWrapper>} />
           </Routes>
         </OrderContext.Provider>
       </div>
