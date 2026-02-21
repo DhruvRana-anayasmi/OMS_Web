@@ -231,7 +231,7 @@ export default function App() {
                       {user?.username ? user.username.charAt(0).toUpperCase() : <CircleUser size={16} />}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-slate-800 truncate">{user?.username || 'User'}</p>
+                      <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-slate-800 truncate">{user?.username || 'User'}</Link>
                     </div>
                   </div>
 

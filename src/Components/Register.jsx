@@ -192,7 +192,7 @@ const Register = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={getInputClass('username')}
-                                    placeholder="e.g. john_doe"
+                                    placeholder="Enter Username"
                                     autoComplete="username"
                                 />
                                 {touched.username && !errors.username && formData.username && (
